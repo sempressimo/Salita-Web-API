@@ -26,5 +26,12 @@ namespace LoungeWebApi
         public Nullable<bool> FromDealer { get; set; }
         public string ServiceType { get; set; }
         public string ServiceDescription { get; set; }
+        public string Phone { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Customer_Address { get; set; }
+        public string Customer_Town { get; set; }
+        public string Customer_ZipCode { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     }
 }

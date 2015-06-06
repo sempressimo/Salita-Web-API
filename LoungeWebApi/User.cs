@@ -12,16 +12,10 @@ namespace LoungeWebApi
     using System;
     using System.Collections.Generic;
     
-    public partial class Visit
+    public partial class User
     {
-        public int Visit_ID { get; set; }
-        public Nullable<int> Customer_ID { get; set; }
-        public Nullable<System.DateTime> VisitDate { get; set; }
-        public Nullable<int> Seat_X { get; set; }
-        public Nullable<int> Seat_Y { get; set; }
-        public Nullable<bool> InLounge { get; set; }
-        public string WaitingFor { get; set; }
-    
-        public virtual Customer Customer { get; set; }
+        public string Username { get; set; }
+        public string UserPassword { get; set; }
+        public string Role { get; set; }
     }
 }

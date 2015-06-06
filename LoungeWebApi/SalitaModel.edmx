@@ -75,14 +75,21 @@ warning 6002: The table/view 'Salita.dbo.ListZip' does not have a primary key de
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="15" />
+          <Property Name="Role" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Visits">
           <Key>
             <PropertyRef Name="Visit_ID" />
           </Key>
           <Property Name="Visit_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Customer_ID" Type="int" />
-          <Property Name="VisitDate" Type="date" />
-          <Property Name="VisitTime" Type="time" Precision="7" />
+          <Property Name="VisitDate" Type="datetime" />
           <Property Name="Seat_X" Type="int" />
           <Property Name="Seat_Y" Type="int" />
           <Property Name="InLounge" Type="bit" />
@@ -115,6 +122,13 @@ warning 6002: The table/view 'Salita.dbo.v_CustomerNeeds' does not have a primar
           <Property Name="FromDealer" Type="bit" />
           <Property Name="ServiceType" Type="varchar" MaxLength="1" />
           <Property Name="ServiceDescription" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Customer_Address" Type="varchar" MaxLength="50" />
+          <Property Name="Customer_Town" Type="varchar" MaxLength="25" />
+          <Property Name="Customer_ZipCode" Type="varchar" MaxLength="9" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -168,6 +182,7 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
           <EntitySet Name="CustomerServices" EntityType="Self.CustomerServices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Maps" EntityType="Self.Maps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visits" EntityType="Self.Visits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListZip" EntityType="Self.ListZip" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -198,7 +213,14 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
     [v_CustomerNeeds].[ZipCode] AS [ZipCode], 
     [v_CustomerNeeds].[FromDealer] AS [FromDealer], 
     [v_CustomerNeeds].[ServiceType] AS [ServiceType], 
-    [v_CustomerNeeds].[ServiceDescription] AS [ServiceDescription]
+    [v_CustomerNeeds].[ServiceDescription] AS [ServiceDescription], 
+    [v_CustomerNeeds].[Phone] AS [Phone], 
+    [v_CustomerNeeds].[FullName] AS [FullName], 
+    [v_CustomerNeeds].[Email] AS [Email], 
+    [v_CustomerNeeds].[Customer_Address] AS [Customer_Address], 
+    [v_CustomerNeeds].[Customer_Town] AS [Customer_Town], 
+    [v_CustomerNeeds].[Customer_ZipCode] AS [Customer_ZipCode], 
+    [v_CustomerNeeds].[IsActive] AS [IsActive]
     FROM [dbo].[v_CustomerNeeds] AS [v_CustomerNeeds]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="v_RecentVisits" EntityType="Self.v_RecentVisits" store:Type="Views" store:Schema="dbo">
@@ -238,6 +260,7 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
           <EntitySet Name="Customers" EntityType="SalitaModel.Customer" />
           <EntitySet Name="CustomerServices" EntityType="SalitaModel.CustomerService" />
           <EntitySet Name="Maps" EntityType="SalitaModel.Map" />
+          <EntitySet Name="Users" EntityType="SalitaModel.User" />
           <EntitySet Name="Visits" EntityType="SalitaModel.Visit" />
           <EntitySet Name="ListZips" EntityType="SalitaModel.ListZip" />
           <EntitySet Name="WatingForReasons" EntityType="SalitaModel.WatingForReason" />
@@ -310,14 +333,21 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
           <Property Name="MapName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MapData" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
         <EntityType Name="Visit">
           <Key>
             <PropertyRef Name="Visit_ID" />
           </Key>
           <Property Name="Visit_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Customer_ID" Type="Int32" />
-          <Property Name="VisitDate" Type="DateTime" Precision="0" />
-          <Property Name="VisitTime" Type="Time" Precision="7" />
+          <Property Name="VisitDate" Type="DateTime" Precision="3" />
           <Property Name="Seat_X" Type="Int32" />
           <Property Name="Seat_Y" Type="Int32" />
           <Property Name="InLounge" Type="Boolean" />
@@ -360,6 +390,13 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
           <Property Name="FromDealer" Type="Boolean" />
           <Property Name="ServiceType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="ServiceDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Customer_Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Customer_Town" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Customer_ZipCode" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="v_RecentVisits">
           <Key>
@@ -471,6 +508,15 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SalitaModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Visits">
             <EntityTypeMapping TypeName="SalitaModel.Visit">
               <MappingFragment StoreEntitySet="Visits">
@@ -478,7 +524,6 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
                 <ScalarProperty Name="InLounge" ColumnName="InLounge" />
                 <ScalarProperty Name="Seat_Y" ColumnName="Seat_Y" />
                 <ScalarProperty Name="Seat_X" ColumnName="Seat_X" />
-                <ScalarProperty Name="VisitTime" ColumnName="VisitTime" />
                 <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
                 <ScalarProperty Name="Customer_ID" ColumnName="Customer_ID" />
                 <ScalarProperty Name="Visit_ID" ColumnName="Visit_ID" />
@@ -508,6 +553,13 @@ warning 6002: The table/view 'Salita.dbo.v_RecentVisits' does not have a primary
           <EntitySetMapping Name="v_CustomerNeeds">
             <EntityTypeMapping TypeName="SalitaModel.v_CustomerNeeds">
               <MappingFragment StoreEntitySet="v_CustomerNeeds">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Customer_ZipCode" ColumnName="Customer_ZipCode" />
+                <ScalarProperty Name="Customer_Town" ColumnName="Customer_Town" />
+                <ScalarProperty Name="Customer_Address" ColumnName="Customer_Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="ServiceDescription" ColumnName="ServiceDescription" />
                 <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
                 <ScalarProperty Name="FromDealer" ColumnName="FromDealer" />
