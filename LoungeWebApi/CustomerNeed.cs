@@ -24,6 +24,7 @@ namespace LoungeWebApi
         public string Town { get; set; }
         public string ZipCode { get; set; }
         public Nullable<bool> FromDealer { get; set; }
+        public Nullable<bool> Canceled { get; set; }
     
         public virtual CustomerService CustomerService { get; set; }
     }
