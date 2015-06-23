@@ -15,7 +15,7 @@ namespace LoungeWebApi.Controllers
         {
             SalitaEntities db = new SalitaEntities();
 
-            return db.v_CustomerNeeds.Where(p => p.WasFullfilled == false).OrderBy(p => p.RequestDateTime);
+            return db.v_CustomerNeeds.Where(p => p.WasFullfilled == false && p.Canceled == false).OrderBy(p => p.RequestDateTime);
         }
     }
 }
